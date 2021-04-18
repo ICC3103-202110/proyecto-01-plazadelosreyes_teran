@@ -1,9 +1,11 @@
+from deck import Deck 
+
 class Player:
 
     def __init__(self,name,coins,cards):
-        self.name = names
+        self.name = name
         self.coins = coins
-        self.cards = []
+        self.cards = cards
 
     @property
     def name(self):

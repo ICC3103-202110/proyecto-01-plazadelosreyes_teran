@@ -1,6 +1,7 @@
 from numpy import random
+from game import Game
 def main():
-    print('hola')
+    Game.play()
 
 if __name__ == "__main__":
     main()
