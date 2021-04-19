@@ -25,8 +25,7 @@ class Game:
             print('')
 
             print(player.name,"your turn:")
-            print("Your cards:",player.cards)
-            cls.__show_coins(player,players)
+            cls.__show_players(player,players)
 
             choice =  cls.__turn(player)
             print('')
@@ -40,6 +39,7 @@ class Game:
             if choice == '3':
                 print(player.name,'chooses Coup!')
                 Logic.coup(player, players)
+                player.coins -= 7
             if choice == '4':
                 print(player.name,'chooses Tax!')
             if choice == '5':
@@ -55,10 +55,11 @@ class Game:
 
     @classmethod
     def __set_players(cls,number):
+        shown = ['*','*']
         for i in range(1, number + 1):
             print("Enter players",i,"name: ")
             name = input()
-            players.append(Player(name,2,cls.__random_cards(deck)))
+            players.append(Player(name,2,cls.__random_cards(deck),shown))
 
     @classmethod
     def __random_cards(cls,deck):
@@ -70,13 +71,15 @@ class Game:
         return cards
 
     @classmethod
-    def __show_coins(cls,current,players):
+    def __show_players(cls,current,players):
+        print("Your cards:",current.cards_self)
         print("Your coins:",current.coins)
         print('')
         for other in players:
             if other.name == current.name:
                 continue
             print(other.name,"coins:",other.coins)
+            print(other.name,'cards:',other.cards_shown)
 
 
     @classmethod

@@ -12,7 +12,7 @@ class Logic:
             if challenged.name == challenge.name:
                 continue
             print('')
-            print(challenge.name,"your cards:",challenge.cards)
+            print(challenge.name,"your cards:",challenge.cards_self)
             print('Do you want to challenge',challenged.name,'counter?(y/n):')
             r = input()
             if r == 'y':
@@ -44,7 +44,7 @@ class Logic:
             if current.name == block.name:
                 continue
             print('')
-            print(block.name,'your cards:',block.cards)
+            print(block.name,'your cards:',block.cards_self)
             print('Do you want to block',current.name,'Foreign Aid(y/n)?:')
             r = input()
             if r == 'y':
@@ -95,6 +95,7 @@ class Logic:
         if not flag:
             print('Invalid player, try again')
             return Logic.coup(current, players)
+        print('')
         print(current.name,'coups',attacked+'!')
 
         

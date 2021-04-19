@@ -2,10 +2,11 @@ from deck import Deck
 
 class Player:
 
-    def __init__(self,name,coins,cards):
+    def __init__(self,name,coins,cards_self,cards_shown):
         self.name = name
         self.coins = coins
-        self.cards = cards
+        self.cards_self = cards_self
+        self.cards_shown = cards_shown
 
     @property
     def name(self):
@@ -27,10 +28,20 @@ class Player:
             self.__coins = 0
 
     @property
-    def cards(self):
-        return self.__cards
+    def cards_self(self):
+        return self.__cards_self
 
-    @cards.setter
-    def cards(self, cards):
-        self.__cards = cards
+    @cards_self.setter
+    def cards_self(self, cards_self):
+        self.__cards_self = cards_self
+
+    @property
+    def cards_shown(self):
+        return self.__cards_shown
+
+    @cards_shown.setter
+    def cards_shown(self, cards_shown):
+        self.__cards_shown = cards_shown
+
+    
     
