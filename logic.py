@@ -5,31 +5,36 @@ from player import Player
 
 class Logic:
 
-    @classmethod
-    def __challenge(cls,challenged,players,card):
+    #public_methods
+    def challenge(challenged,players,card):
         challengers = []
         for challenge in players:
             if challenged.name == challenge.name:
                 continue
-            print(challenge.name,'Do you want to challenge',challenged.name,'counter?(y/n):')
+            print('')
+            print(challenge.name,"your cards:",challenge.cards)
+            print('Do you want to challenge',challenged.name,'counter?(y/n):')
+            r = input()
             if r == 'y':
-                challengers.append = challenge
-            
-            if len(challengers) > 0:
+                challengers.append(challenge)
+        if len(challengers) > 0:
+            if len(challengers) > 1:
                 challenger = challengers[random.randint(0,len(challengers)-1)]
-                print('')
-                print(challenger.name,'decides to challenge',challenged.name,'Counter!')
-                print(challenged.name,'cards:')
-                if card in challenged.cards:
-                    print('['+str(card),'*]')
+            if len(challengers) == 1:
+                challenger = challengers[0]
+            print('')
+            print(challenger.name,'decides to challenge',challenged.name,'Counter!\n')                
+            print(challenged.name,'cards:')
+            if card in challenged.cards:
+                    print('['+str(card),', * ]')
                     print(challenged.name,'has a',card+'!\n')
                     print(challenger.name,'you lost the challenge, wich one of your cards do you loose')
-                    return False
-                else:
-                    print('You dont have the',card,'wich one of your cards do you loose(0/1)')
                     return True
-            else: 
+            else:
+                print('You dont have the',card,'wich one of your cards do you loose(0/1)')
                 return False
+        else: 
+            return False
                 
 
     #public_method
@@ -39,16 +44,27 @@ class Logic:
         for block in players:
             if current.name == block.name:
                 continue
-            print(block.name,'You have a Duke, Do you want to block',current.name,'Foreign Aid(y/n)?:')
+            print('')
+            print(block.name,'your cards:',block.cards)
+            print('Do you want to block',current.name,'Foreign Aid(y/n)?:')
+            r = input()
             if r == 'y':
-                blockers.append = block
+                blockers.append(block)
 
         if len(blockers) > 0:
-            blocker = blockers[random.randint(0,len(blockers)-1)]
+            if len(blockers) > 1:
+                blocker = blockers[random.randint(0,len(blockers)-1)]
+            if len(blockers) == 1:
+                blocker = blockers[0]
             print('')
             print(blocker.name,'decides to block',current.name,'Foreign Aid!')
-            if cls.__challenge(blocker,players,card):
-                print('bap')
-       
+            if Logic.challenge(blocker,players,card):
+                print('\nThe counter won the challenge,',current.name,'cannot take 2 coins')
+                return False
+            else:
+                print('The counter lost the challenge,',current.name,'takes 2 coins!')
+                return True
         else:
-            return False
+            print('')
+            print(current.name,'takes 2 coins!')
+            return True
