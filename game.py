@@ -1,6 +1,8 @@
 from deck import Deck
 from player import Player
-from numpy import random 
+from numpy import random
+from logic import Logic
+
 deck = Deck.create_deck()
 choices = ['1','2','3','4','5','6','7','s']
 
@@ -8,10 +10,10 @@ class Game:
 
     __players = []
 
-    p = str(input("Insert number of players(3-4): "))
+    p = str(input("Select number of players(3-4): "))
     while p != '3' and p != '4':
-        print("Wrong number, try again")
-        p = str(input("Insert number of players(3-4): "))
+        print("Invalid number, try again")
+        p = str(input("Select number of players(3-4): "))
     __number_of_players = int(p)
 
     @classmethod
@@ -23,12 +25,18 @@ class Game:
                 turn = 0
             player = cls.__players[turn]
             print('')
+
             print(player.name,"your turn:")
             print("Your cards:",player.cards)
             cls.__show_coins(player,cls.__players)
+
             print("\nSelect your play:\n1)Income\n2)Foreign aid\n3)Coup\n4)Tax\n5)Assasinate \
             \n6)Exchange\n7)Steal")
-            choice = input()
+            if player.coins >= 10:
+                print('You have 10+ coins, you can only play coup')
+                choice = '3'
+            else:
+                choice = input()
 
             while choice not in choices:
                 print("\nInvalid choice")
@@ -36,25 +44,25 @@ class Game:
                 \n6)Exchange\n7)Steal")
                 choice = input()
             print('')
+
             if choice == '1':
-                print('Income')
+                print(player.name, 'chooses Income!')
+                player.coins += 1
             if choice == '2':
-                print("Foreign")
+                print(player.name,"chooses Foreign Aid!")
             if choice == '3':
-                print('Coup')
+                print(player.name,'chooses Coup!')
             if choice == '4':
-                print('Tax')
+                print(player.name,'chooses Tax!')
             if choice == '5':
-                print('Assasinate')
+                print(player.name,'chooses Assasinate!')
             if choice == '6':
-                print('Exchange')
+                print(player.name,'chooses Exchange!')
             if choice == '7':
-                print('Steal')
+                print(player.name,'chooses Steal!')
             if choice == 's':
                 break
             turn += 1
-
-
 
 
     @classmethod
@@ -81,5 +89,8 @@ class Game:
             if other.name == current.name:
                 continue
             print(other.name,"coins:",other.coins)
+
+   
+
 
 
