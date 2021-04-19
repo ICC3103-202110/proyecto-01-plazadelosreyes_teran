@@ -62,7 +62,7 @@ class Logic:
 
                 
 
-    #public_method
+    #public_methods
     def foreign_aid(current,players):
         card = 'Duke'
         counter = Logic.counter(players,current)
@@ -82,4 +82,20 @@ class Logic:
         else:
             print('The counter lost the challenge,',current.name,'takes 2 coins!')
             return True
+
+
+    def coup(current,players):
+        print(current.name,'which player do you coup:')
+        attacked = input('')
+        flag = False
+        for a in players:
+            if attacked == a.name and attacked != current.name:
+                flag = True
+                break
+        if not flag:
+            print('Invalid player, try again')
+            return Logic.coup(current, players)
+        print(current.name,'coups',attacked+'!')
+
+        
 

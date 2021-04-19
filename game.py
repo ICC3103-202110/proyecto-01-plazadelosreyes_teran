@@ -8,8 +8,6 @@ choices = ['1','2','3','4','5','6','7','s']
 players = []
 class Game:
 
-    
-
     p = str(input("Select number of players(3-4): "))
     while p != '3' and p != '4':
         print("Invalid number, try again")
@@ -41,6 +39,7 @@ class Game:
                     player.coins += 2
             if choice == '3':
                 print(player.name,'chooses Coup!')
+                Logic.coup(player, players)
             if choice == '4':
                 print(player.name,'chooses Tax!')
             if choice == '5':
