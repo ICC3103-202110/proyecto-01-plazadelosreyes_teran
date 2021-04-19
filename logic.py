@@ -17,6 +17,7 @@ class Logic:
             r = input()
             if r == 'y':
                 challengers.append(challenge)
+        
         if len(challengers) > 0:
             if len(challengers) > 1:
                 challenger = challengers[random.randint(0,len(challengers)-1)]
@@ -34,13 +35,11 @@ class Logic:
                 print('You dont have the',card,'wich one of your cards do you loose(0/1)')
                 return False
         else: 
-            return False
-                
+            print('Nobody challenged',challenged.name)
+            return 'no one'
 
-    #public_method
-    def foreign_aid(current,players):
+    def counter(players,current):
         blockers = []
-        card = 'Duke'
         for block in players:
             if current.name == block.name:
                 continue
@@ -56,15 +55,31 @@ class Logic:
                 blocker = blockers[random.randint(0,len(blockers)-1)]
             if len(blockers) == 1:
                 blocker = blockers[0]
-            print('')
             print(blocker.name,'decides to block',current.name,'Foreign Aid!')
-            if Logic.challenge(blocker,players,card):
-                print('\nThe counter won the challenge,',current.name,'cannot take 2 coins')
-                return False
-            else:
-                print('The counter lost the challenge,',current.name,'takes 2 coins!')
-                return True
+            return blocker
         else:
+            return False
+
+                
+
+    #public_method
+    def foreign_aid(current,players):
+        card = 'Duke'
+        counter = Logic.counter(players,current)
+        if not counter:
             print('')
             print(current.name,'takes 2 coins!')
             return True
+
+        blocker = counter
+        challenge = Logic.challenge(blocker,players,card)
+        if challenge:
+            print('\nThe counter won the challenge,',current.name,'cannot take 2 coins')
+            return False
+        if challenge == 'no one':
+            print(current.name,'cannot take 2 coins')
+            return False
+        else:
+            print('The counter lost the challenge,',current.name,'takes 2 coins!')
+            return True
+
