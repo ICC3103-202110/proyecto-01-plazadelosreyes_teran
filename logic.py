@@ -2,7 +2,7 @@ from numpy import random
 from random import shuffle
 from deck import Deck
 from player import Player
-
+deck = Deck.create_deck()
 class Logic:
 
     #public_methods
@@ -28,10 +28,11 @@ class Logic:
             if card in challenged.cards_self:
                     challenged.cards_shown.remove('*')
                     challenged.cards_shown.append(card)
-                    print(challenger.name,'cards:',challenged.cards_shown)
+                    print(challenged.name,'cards:',challenged.cards_shown)
                     print(challenged.name,'has a',card+'!\n')
-                    print(challenged.name,'you lost the challenge')
+                    print(challenger.name,'you lost the challenge')
                     Logic.loose_card(challenger)
+                    Logic.change_card(challenged, card)
                     return True
             else:
                 print(challenged.name,'You dont have the',card)
@@ -74,7 +75,22 @@ class Logic:
         looser.cards_self.remove(card)
         looser.cards_shown.remove('*')
         looser.cards_shown.append(card)
+        print()
         print(looser.name,'looses his',card)                
+
+    def change_card(current,card):
+        current.cards_self.remove(card)
+        deck.append(card)
+        shuffle(deck)
+        new = deck[0]
+        current.cards_self.append(new)
+        if len(current.cards_self) == 2:
+            current.cards_shown.remove(card)
+            current.cards_shown.append('*')
+        print()
+        print(current.name,'your new cards:',current.cards_self)
+
+
 
     #public_methods
     def foreign_aid(current,active_players):
@@ -128,6 +144,4 @@ class Logic:
         
 
 
-
-        
 
