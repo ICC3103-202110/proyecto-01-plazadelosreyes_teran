@@ -6,6 +6,8 @@ from logic import Logic
 deck = Deck.create_deck()
 choices = ['1','2','3','4','5','6','7','s']
 players = []
+active_players = []
+
 class Game:
 
     p = str(input("Select number of players(3-4): "))
@@ -21,12 +23,11 @@ class Game:
         while True:
             if turn > cls.__number_of_players-1:
                 turn = 0
-            player = players[turn]
+            player = active_players[turn]
             print('')
 
             print(player.name,"your turn:")
             cls.__show_players(player,players)
-
             choice =  cls.__turn(player)
             print('')
             if choice == '1':
@@ -34,14 +35,16 @@ class Game:
                 player.coins += 1
             if choice == '2':
                 print(player.name,"chooses Foreign Aid!")
-                if Logic.foreign_aid(player, players):
+                if Logic.foreign_aid(player, active_players):
                     player.coins += 2
             if choice == '3':
                 print(player.name,'chooses Coup!')
-                Logic.coup(player, players)
+                Logic.coup(player, active_players)
                 player.coins -= 7
             if choice == '4':
                 print(player.name,'chooses Tax!')
+                if Logic.tax(player, active_players):
+                    player.coins += 3
             if choice == '5':
                 print(player.name,'chooses Assasinate!')
             if choice == '6':
@@ -55,11 +58,13 @@ class Game:
 
     @classmethod
     def __set_players(cls,number):
-        shown = ['*','*']
         for i in range(1, number + 1):
+            shown = ['*','*']
             print("Enter players",i,"name: ")
             name = input()
-            players.append(Player(name,2,cls.__random_cards(deck),shown))
+            cards = cls.__random_cards(deck)
+            players.append(Player(name,2,cards,shown))
+            active_players.append(Player(name,2,cards,shown))
 
     @classmethod
     def __random_cards(cls,deck):

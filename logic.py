@@ -13,7 +13,7 @@ class Logic:
                 continue
             print('')
             print(challenge.name,"your cards:",challenge.cards_self)
-            print('Do you want to challenge',challenged.name,'counter?(y/n):')
+            print('Do you want to challenge',challenged.name,'(y/n):')
             r = input()
             if r == 'y':
                 challengers.append(challenge)
@@ -24,15 +24,18 @@ class Logic:
             if len(challengers) == 1:
                 challenger = challengers[0]
             print('')
-            print(challenger.name,'decides to challenge',challenged.name,'Counter!\n')                
-            print(challenged.name,'cards:')
-            if card in challenged.cards:
-                    print('['+str(card),', * ]')
+            print(challenger.name,'decides to challenge',challenged.name,'\n')                
+            if card in challenged.cards_self:
+                    challenged.cards_shown.remove('*')
+                    challenged.cards_shown.append(card)
+                    print(challenger.name,'cards:',challenged.cards_shown)
                     print(challenged.name,'has a',card+'!\n')
-                    print(challenger.name,'you lost the challenge, wich one of your cards do you loose')
+                    print(challenged.name,'you lost the challenge')
+                    Logic.loose_card(challenger)
                     return True
             else:
-                print('You dont have the',card,'wich one of your cards do you loose(0/1)')
+                print(challenged.name,'You dont have the',card)
+                Logic.loose_card(challenged)
                 return False
         else: 
             print('Nobody challenged',challenged.name)
@@ -45,7 +48,7 @@ class Logic:
                 continue
             print('')
             print(block.name,'your cards:',block.cards_self)
-            print('Do you want to block',current.name,'Foreign Aid(y/n)?:')
+            print('Do you want to block',current.name,'(y/n)')
             r = input()
             if r == 'y':
                 blockers.append(block)
@@ -55,24 +58,35 @@ class Logic:
                 blocker = blockers[random.randint(0,len(blockers)-1)]
             if len(blockers) == 1:
                 blocker = blockers[0]
-            print(blocker.name,'decides to block',current.name,'Foreign Aid!')
+            print('')
+            print(blocker.name,'decides to block',current.name)
             return blocker
         else:
             return False
 
-                
+    def loose_card(looser):
+        print(looser.name,'wich one of your cards do you loose:',looser.cards_self)
+        card = input()
+        if card not in looser.cards_self:
+            print('Invalid choice')
+            return Logic.loose_card(looser,players)
+        
+        looser.cards_self.remove(card)
+        looser.cards_shown.remove('*')
+        looser.cards_shown.append(card)
+        print(looser.name,'looses his',card)                
 
     #public_methods
-    def foreign_aid(current,players):
+    def foreign_aid(current,active_players):
         card = 'Duke'
-        counter = Logic.counter(players,current)
+        counter = Logic.counter(active_players,current)
         if not counter:
             print('')
             print(current.name,'takes 2 coins!')
             return True
 
         blocker = counter
-        challenge = Logic.challenge(blocker,players,card)
+        challenge = Logic.challenge(blocker,active_players,card)
         if challenge:
             print('\nThe counter won the challenge,',current.name,'cannot take 2 coins')
             return False
@@ -80,23 +94,40 @@ class Logic:
             print(current.name,'cannot take 2 coins')
             return False
         else:
-            print('The counter lost the challenge,',current.name,'takes 2 coins!')
+            print('\nThe counter lost the challenge,',current.name,'takes 2 coins!')
             return True
 
 
-    def coup(current,players):
+    def coup(current,active_players):
         print(current.name,'which player do you coup:')
         attacked = input('')
         flag = False
-        for a in players:
+        for a in active_players:
             if attacked == a.name and attacked != current.name:
+                attacked = a
                 flag = True
                 break
+
         if not flag:
             print('Invalid player, try again')
-            return Logic.coup(current, players)
+            return Logic.coup(current, active_players)
+        
         print('')
-        print(current.name,'coups',attacked+'!')
+        print(current.name,'coups',attacked.name+'!')
+        Logic.loose_card(attacked)
+
+    def tax(current,active_players):
+        card = 'Duke'
+        challenge = Logic.challenge(current,active_players,card)
+        if challenge:
+            print()
+            print(current.name,'takes 3 coins!')
+        else:
+            print()
+            print(current.name,'cannot take 3 coins')
+        
+
+
 
         
 
