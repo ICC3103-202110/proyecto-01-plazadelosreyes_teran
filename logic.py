@@ -39,7 +39,7 @@ class Logic:
                 Logic.loose_card(challenged)
                 return False
         else: 
-            print('Nobody challenged',challenged.name)
+            print('\nNobody challenged',challenged.name)
             return 'no one'
 
     def counter(players,current):
@@ -141,6 +141,41 @@ class Logic:
         else:
             print()
             print(current.name,'cannot take 3 coins')
+
+    def assasinate(current,active_players):
+        card = 'Assasin'
+        print(current.name,'which player do you assasinate:')
+        attacked = input('')
+        flag = False
+        for a in active_players:
+            if attacked == a.name and attacked != current.name:
+                attacked = a
+                flag = True
+                break
+        if not flag:
+            print('\nInvalid player, try again')
+            return Logic.assasinate(current, active_players)
+        print('')
+        print(current.name,'decides to assasinate',attacked.name+'!')
+        challenge = Logic.challenge(current,active_players,card)
+        if challenge:
+            blocker = Logic.counter(active_players, current)
+            card = 'Contessa'
+            challenge = Logic.challenge(blocker,active_players,card)
+        else:
+            print()
+            print(current.name,'cannot assasin',attacked.name)
+
+        
+
+        print('')
+
+    def exchange(current,active_players):
+        print('')
+
+    def steal(current,active_players):
+        print('')
+
         
 
 
