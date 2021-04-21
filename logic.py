@@ -160,15 +160,28 @@ class Logic:
         challenge = Logic.challenge(current,active_players,card)
         if challenge:
             blocker = Logic.counter(active_players, current)
+            if not blocker:
+                print()
+                print(current.name,'assasinates',attacked.name)
+                Logic.loose_card(attacked)
+                return True
             card = 'Contessa'
             challenge = Logic.challenge(blocker,active_players,card)
+            if challenge:
+                print(blocker.name,'blocks',current.name,'assasination!')
+                return False
+            if challenge == 'no one':
+                print(blocker.name,'blocks',current.name,'assasination!')
+                return False
+            if not challenge:
+                print(current.name,'assasinates',attacked.name)
+                Logic.loose_card(attacked)
+
         else:
             print()
             print(current.name,'cannot assasin',attacked.name)
 
         
-
-        print('')
 
     def exchange(current,active_players):
         print('')
