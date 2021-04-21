@@ -35,7 +35,7 @@ class Game:
             print('Active players:')
             cls.__show_players(player,active_players)
             if len(inactive_players) > 0:
-                print('\n,Inactive players:')
+                print('\nInactive players:')
                 cls.__show_players(player,inactive_players)
             choice =  cls.__turn(player)
             print('')
@@ -69,6 +69,9 @@ class Game:
                 print(player.name,'chooses Steal!')
             if choice == 's':
                 break
+            if turn == cls.__number_of_players-1:
+                cls.__remove_player()
+                cls.__declare_winner()
             turn += 1
 
 
@@ -127,7 +130,20 @@ class Game:
         
         print('')
 
-   
+    @classmethod
+    def __remove_player(cls):
+        for player in active_players:
+            if len(player.cards_self) == 0:
+                active_players.remove(player)
+                inactive_players.append(player)
+                cls.__number_of_players -= 1
+                print(player.name,"lost")
+    
+    @classmethod
+    def __declare_winner(cls):
+        if len(active_players) == 1:
+            print("the winner is", active_players[0],"!")
+
 
 
 

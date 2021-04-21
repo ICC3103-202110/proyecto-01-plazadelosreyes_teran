@@ -138,9 +138,11 @@ class Logic:
         if challenge:
             print()
             print(current.name,'takes 3 coins!')
+            return True
         else:
             print()
             print(current.name,'cannot take 3 coins')
+            return False
 
     def assasinate(current,active_players):
         card = 'Assasin'
@@ -184,9 +186,15 @@ class Logic:
         
 
     def exchange(current,active_players):
+
         print('')
 
     def steal(current,active_players):
+        print(current.name,'which player would you like to steal from ? :')
+
+
+
+
         print('')
 
         
