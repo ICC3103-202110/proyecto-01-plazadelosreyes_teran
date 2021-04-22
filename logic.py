@@ -24,20 +24,37 @@ class Logic:
             if len(challengers) == 1:
                 challenger = challengers[0]
             print('')
-            print(challenger.name,'decides to challenge',challenged.name,'\n')                
-            if card in challenged.cards_self:
-                    challenged.cards_shown.remove('*')
-                    challenged.cards_shown.append(card)
-                    print(challenged.name,'cards:',challenged.cards_shown)
-                    print(challenged.name,'has a',card+'!\n')
-                    print(challenger.name,'you lost the challenge')
-                    Logic.loose_card(challenger)
-                    Logic.change_card(challenged, card)
-                    return True
-            else:
-                print(challenged.name,'You dont have the',card)
-                Logic.loose_card(challenged)
-                return False
+            print(challenger.name,'decides to challenge',challenged.name,'\n')
+            if card == "Captain":
+                cards = [card, "Ambassador"]
+                for i in cards:
+                    if i in challenged.cards_self:
+                        challenged.cards_shown.remove('*')
+                        challenged.cards_shown.append(i)
+                        print(challenged.name,'cards:',challenged.cards_shown)
+                        print(challenged.name,'has a',i+'!\n')
+                        print(challenger.name,'you lost the challenge')
+                        Logic.loose_card(challenger)
+                        Logic.change_card(challenged, i)
+                        return True
+                    else:
+                        print(challenged.name,'You dont have the',i)
+                        Logic.loose_card(challenged)
+                        return False
+            else:            
+                if card in challenged.cards_self:
+                        challenged.cards_shown.remove('*')
+                        challenged.cards_shown.append(card)
+                        print(challenged.name,'cards:',challenged.cards_shown)
+                        print(challenged.name,'has a',card+'!\n')
+                        print(challenger.name,'you lost the challenge')
+                        Logic.loose_card(challenger)
+                        Logic.change_card(challenged, card)
+                        return True
+                else:
+                    print(challenged.name,'You dont have the',card)
+                    Logic.loose_card(challenged)
+                    return False
         else: 
             print('\nNobody challenged',challenged.name)
             return 'no one'
@@ -171,13 +188,14 @@ class Logic:
             challenge = Logic.challenge(blocker,active_players,card)
             if challenge:
                 print(blocker.name,'blocks',current.name,'assasination!')
-                return False
+                return True
             if challenge == 'no one':
                 print(blocker.name,'blocks',current.name,'assasination!')
-                return False
+                return True
             if not challenge:
                 print(current.name,'assasinates',attacked.name)
                 Logic.loose_card(attacked)
+                return True
 
         else:
             print()
@@ -186,12 +204,47 @@ class Logic:
         
 
     def exchange(current,active_players):
-
         print('')
 
     def steal(current,active_players):
+        card = 'Captain'  
         print(current.name,'which player would you like to steal from ? :')
-
+        stoled = input('')
+        flag = False
+        for a in active_players:
+            if stoled == a.name and stoled != current.name:
+                stoled = a
+                flag = True
+                break
+        if not flag:
+            print('\nInvalid player, try again')
+            return Logic.steal(current, active_players)
+        print('')
+        print(current.name,'decides to steal from',stoled.name+'!')
+        challenge = Logic.challenge(current,active_players,card)
+        if challenge:
+            blocker = Logic.counter(active_players, current)
+            if not blocker:
+                print()
+                print(current.name,'stole from',stoled.name)
+                stoled.coins -= 2
+                return True
+            challenge = Logic.challenge(blocker,active_players,card)
+            if challenge:
+                print(blocker.name,'blocks',current.name,'steal!')
+                return False
+            if challenge == 'no one':
+                print(blocker.name,'blocks',current.name,'steal!')
+                return False
+            if not challenge:
+                print(current.name,'stole from',attacked.name)
+                Logic.loose_card(attacked)
+                stoled.coins -= 2
+                return True
+        ##########################falta_el_counter#################
+        else:
+            print()
+            print(current.name,'cannot steal from',stoled.name)
 
 
 

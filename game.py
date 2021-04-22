@@ -40,32 +40,30 @@ class Game:
                 print('')
                 if choice == '1':
                     print(player.name,'chooses Income!')
-                    actual_coins = player.coins
-                    player.coins = actual_coins + 1
+                    player.coins += 1
                 if choice == '2':
                     print(player.name,"chooses Foreign Aid!")
                     if Logic.foreign_aid(player, active_players):
-                        actual_coins = player.coins
-                        player.coins = actual_coins + 2
+                        player.coins += 2
                 if choice == '3':
                     print(player.name,'chooses Coup!')
                     Logic.coup(player, active_players)
-                    actual_coins = player.coins
-                    player.coins = actual_coins - 7
+                    player.coins -= 7
                 if choice == '4':
                     print(player.name,'chooses Tax!')
                     if Logic.tax(player, active_players):
-                        actual_coins = player.coins
-                        player.coins = actual_coins + 3
+                        player.coins += 3
                 if choice == '5':
                     print(player.name,'chooses Assasinate!')
                     if Logic.assasinate(player, active_players):
-                        actual_coins = player.coins
-                        player.coins = actual_coins - 3
+                        player.coins -= 3
                 if choice == '6':
                     print(player.name,'chooses Exchange!')
                 if choice == '7':
                     print(player.name,'chooses Steal!')
+                    if Logic.steal(player, active_players):
+                        player.coins += 2
+
                 if choice == 's':
                     return 0
         
