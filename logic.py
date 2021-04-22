@@ -70,7 +70,7 @@ class Logic:
         card = input()
         if card not in looser.cards_self:
             print('Invalid choice')
-            return Logic.loose_card(looser,players)
+            return Logic.loose_card(looser)
         
         looser.cards_self.remove(card)
         looser.cards_shown.remove('*')

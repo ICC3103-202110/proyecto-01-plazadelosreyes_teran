@@ -17,62 +17,61 @@ class Game:
         p = str(input("Select number of players(3-4): "))
 
     __number_of_players = int(p)
-
     @classmethod
-    def play(cls):
-        turn = 0
-        cls.__set_players(cls.__number_of_players)
+    def play(cls,flag):
+        if flag == 0:
+            cls.__set_players(cls.__number_of_players)
+        flag = 1
         while True:
-            if turn > cls.__number_of_players-1:
-                turn = 0
-            player = active_players[turn]
-            print('')
+            for current in active_players:
+                player = current
 
-            print(player.name,"your turn:")
-            print("Your cards:",player.cards_self)
-            print("Your coins:",player.coins)
-            print('')
-            print('Active players:')
-            cls.__show_players(player,active_players)
-            if len(inactive_players) > 0:
-                print('\nInactive players:')
-                cls.__show_players(player,inactive_players)
-            choice =  cls.__turn(player)
-            print('')
-            if choice == '1':
-                print(player.name,'chooses Income!')
-                actual_coins = player.coins
-                player.coins = actual_coins + 1
-            if choice == '2':
-                print(player.name,"chooses Foreign Aid!")
-                if Logic.foreign_aid(player, active_players):
+                print('')
+                print(player.name,"your turn:")
+                print("Your cards:",player.cards_self)
+                print("Your coins:",player.coins)
+                print('')
+                print('Active players:')
+                cls.__show_players(player,active_players)
+                if len(inactive_players) > 0:
+                    print('\nInactive players:')
+                    cls.__show_players(player,inactive_players)
+                choice =  cls.__turn(player)
+                print('')
+                if choice == '1':
+                    print(player.name,'chooses Income!')
                     actual_coins = player.coins
-                    player.coins = actual_coins + 2
-            if choice == '3':
-                print(player.name,'chooses Coup!')
-                Logic.coup(player, active_players)
-                actual_coins = player.coins
-                player.coins = actual_coins - 7
-            if choice == '4':
-                print(player.name,'chooses Tax!')
-                if Logic.tax(player, active_players):
+                    player.coins = actual_coins + 1
+                if choice == '2':
+                    print(player.name,"chooses Foreign Aid!")
+                    if Logic.foreign_aid(player, active_players):
+                        actual_coins = player.coins
+                        player.coins = actual_coins + 2
+                if choice == '3':
+                    print(player.name,'chooses Coup!')
+                    Logic.coup(player, active_players)
                     actual_coins = player.coins
-                    player.coins = actual_coins + 3
-            if choice == '5':
-                print(player.name,'chooses Assasinate!')
-                if Logic.assasinate(player, active_players):
-                    actual_coins = player.coins
-                    player.coins = actual_coins - 3
-            if choice == '6':
-                print(player.name,'chooses Exchange!')
-            if choice == '7':
-                print(player.name,'chooses Steal!')
-            if choice == 's':
-                break
-            if turn == cls.__number_of_players-1:
+                    player.coins = actual_coins - 7
+                if choice == '4':
+                    print(player.name,'chooses Tax!')
+                    if Logic.tax(player, active_players):
+                        actual_coins = player.coins
+                        player.coins = actual_coins + 3
+                if choice == '5':
+                    print(player.name,'chooses Assasinate!')
+                    if Logic.assasinate(player, active_players):
+                        actual_coins = player.coins
+                        player.coins = actual_coins - 3
+                if choice == '6':
+                    print(player.name,'chooses Exchange!')
+                if choice == '7':
+                    print(player.name,'chooses Steal!')
+                if choice == 's':
+                    return 0
+        
                 cls.__remove_player()
-                cls.__declare_winner()
-            turn += 1
+                if cls.__declare_winner() != False:
+                    return 0
 
 
     @classmethod
@@ -137,12 +136,17 @@ class Game:
                 active_players.remove(player)
                 inactive_players.append(player)
                 cls.__number_of_players -= 1
-                print(player.name,"lost")
+                print()
+                print(player.name,"is out of the game!")
     
     @classmethod
     def __declare_winner(cls):
         if len(active_players) == 1:
-            print("the winner is", active_players[0],"!")
+            winner = active_players[0]
+            print("\nThe winner is", active_players[0].name,"!")
+            return winner
+        else:
+            return False
 
 
 
