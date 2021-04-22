@@ -108,6 +108,64 @@ class Logic:
         print(current.name,'your new cards:',current.cards_self)
 
 
+    def exchange_method(number,current,deck):
+        if number == 1:
+            card = current.cards_self[0]
+            new = [deck[0],deck[1],card]
+            print()
+            print(current.name,'your card:',current.cards_self)
+            current.cards_self.remove(card)
+            deck.pop(0)
+            deck.pop(1)
+            print(current.name,'wich one of these cards do you pick')
+            print(new)
+            choice = input()
+            while choice not in new:
+                print('Invalid choice, try again')
+                choice = input()
+            new.remove(choice)
+            current.cards_self.append(choice)
+            for back in new:
+                deck.append(back)
+            shuffle(deck)
+            print()
+            print(current.name,'exchanged his/her card!')
+        else:
+            print()
+            print(current.name,'your cards:',current.cards_self)
+            new = [deck[0],deck[1],current.cards_self[0],current.cards_self[1]]
+            deck.pop(0)
+            deck.pop(1)
+            current.cards_self.pop(0)
+            current.cards_self.pop(0)    
+            print(current.name,'pick your first card')
+            print(new)
+            choice1 = input()       
+            while choice1 not in new:
+                print('Invalid choice, try again')
+                choice1 = input()
+            new.remove(choice1)
+            current.cards_self.append(choice1)
+            print()
+            print(current.name,'pick your second card')
+            print(new)
+            choice2 = input()       
+            while choice2 not in new:
+                print('Invalid choice, try again')
+                choice2 = input()
+            new.remove(choice2) 
+            current.cards_self.append(choice2)
+            for back in new:
+                deck.append(back)
+            shuffle(deck)
+            print()
+            print(current.name,'exchanged his/her cards!')
+
+
+
+
+
+
 
     #public_methods
     def foreign_aid(current,active_players):
@@ -204,6 +262,16 @@ class Logic:
         
 
     def exchange(current,active_players):
+        number = len(current.cards_self)
+        card = 'Ambassador'
+        challenge = Logic.challenge(current,active_players,card)
+        if challenge or 'no one':
+            Logic.exchange_method(number, current, deck)
+            return True
+        if not challenge:
+            print('')
+            print(current.name,'lost the challenge, so he/she cannot exchange his/her cards\n')
+            return False
         print('')
 
     def steal(current,active_players):
@@ -241,7 +309,6 @@ class Logic:
                 Logic.loose_card(attacked)
                 stoled.coins -= 2
                 return True
-        ##########################falta_el_counter#################
         else:
             print()
             print(current.name,'cannot steal from',stoled.name)

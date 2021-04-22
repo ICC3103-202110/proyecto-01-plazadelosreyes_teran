@@ -59,6 +59,7 @@ class Game:
                         player.coins -= 3
                 if choice == '6':
                     print(player.name,'chooses Exchange!')
+                    Logic.exchange(player, active_players)
                 if choice == '7':
                     print(player.name,'chooses Steal!')
                     if Logic.steal(player, active_players):
