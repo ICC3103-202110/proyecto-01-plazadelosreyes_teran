@@ -65,8 +65,6 @@ class Game:
                     if Logic.steal(player, active_players):
                         player.coins += 2
 
-                if choice == 's':
-                    return 0
         
                 cls.__remove_player()
                 if cls.__declare_winner() != False:
