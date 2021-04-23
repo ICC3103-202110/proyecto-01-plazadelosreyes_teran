@@ -42,14 +42,14 @@ class Logic:
                         return False
             else:            
                 if card in challenged.cards_self:
-                        challenged.cards_shown.remove('*')
-                        challenged.cards_shown.append(card)
-                        print(challenged.name,'cards:',challenged.cards_shown)
-                        print(challenged.name,'has a',card+'!\n')
-                        print(challenger.name,'you lost the challenge')
-                        Logic.loose_card(challenger)
-                        Logic.change_card(challenged, card)
-                        return True
+                    challenged.cards_shown.remove('*')
+                    challenged.cards_shown.append(card)
+                    print(challenged.name,'cards:',challenged.cards_shown)
+                    print(challenged.name,'has a',card+'!\n')
+                    print(challenger.name,'you lost the challenge')
+                    Logic.loose_card(challenger)
+                    Logic.change_card(challenged, card)
+                    return True
                 else:
                     print(challenged.name,'You don\'t have the',card)
                     Logic.loose_card(challenged)
@@ -94,13 +94,12 @@ class Logic:
 
     def change_card(current,card):
         current.cards_self.remove(card)
+        current.cards_shown.remove(card)
         deck.append(card)
         shuffle(deck)
         new = deck[0]
         current.cards_self.append(new)
-        if len(current.cards_self) == 2:
-            current.cards_shown.remove(card)
-            current.cards_shown.append('*')
+        current.cards_shown.append('*')
         print()
         print(current.name,'your new cards:',current.cards_self)
 
@@ -221,6 +220,9 @@ class Logic:
         print(current.name,'decides to assasinate',attacked.name+'!')
         challenge = Logic.challenge(current,active_players,card)
         if challenge:
+            if len(attacked.cards_self) == 0:
+                print(attacked.name,'has no more cards')
+                return 0
             blocker = Logic.counter(active_players, current)
             if not blocker:
                 print()
@@ -230,6 +232,9 @@ class Logic:
             card = 'Contessa'
             challenge = Logic.challenge(blocker,active_players,card)
             if challenge:
+                if len(attacked.cards_self) == 0:
+                    print(attacked.name,'has no more cards')
+                    return 0
                 print(blocker.name,'blocks',current.name,'assasination!')
                 return True
             if challenge == 'no one':
@@ -247,10 +252,10 @@ class Logic:
         number = len(current.cards_self)
         card = 'Ambassador'
         challenge = Logic.challenge(current,active_players,card)
-        if challenge or 'no one':
+        if challenge or  challenge == 'no one':
             Logic.exchange_method(number, current, deck)
             return True
-        if not challenge:
+        else:
             print('')
             print(current.name,'lost the challenge, so he/she cannot exchange his/her cards\n')
             return False

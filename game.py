@@ -8,6 +8,7 @@ choices = ['1','2','3','4','5','6','7','s']
 players = []
 active_players = []
 inactive_players = []
+names = []
 
 class Game:
 
@@ -28,8 +29,9 @@ class Game:
             cls.__set_players(cls.__number_of_players)
         flag = 1
         while True:
-            turn_counter=0
-            for current in active_players:
+            for current in players:
+                if current.name not in names:
+                    continue
                 player = current
                 print('')
                 print(player.name,"it\'s your turn:")
@@ -72,10 +74,7 @@ class Game:
                 cls.__remove_player()
                 if cls.__declare_winner() != False:
                     return 0
-                if turn_counter == int(len(active_players)-1):
-                    print("\n════════════════════════ END OF TURN ════════════════════════")
-                else:
-                    turn_counter +=1
+            print("\n════════════════════════ END OF TURN ════════════════════════")
 
     @classmethod
     def __set_players(cls,number):
@@ -91,6 +90,7 @@ class Game:
             coins = 2
             players.append(Player(name,coins,cards,shown))
             active_players.append(Player(name,coins,cards,shown))
+            names.append(name)
 
     @classmethod
     def __random_cards(cls,deck):
@@ -137,7 +137,7 @@ class Game:
             if len(player.cards_self) == 0:
                 active_players.remove(player)
                 inactive_players.append(player)
-                cls.__number_of_players -= 1
+                names.remove(player.name)
                 print()
                 print(player.name,"is out of the game!")
     
