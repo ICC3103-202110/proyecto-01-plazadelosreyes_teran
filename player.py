@@ -42,6 +42,3 @@ class Player:
     @cards_shown.setter
     def cards_shown(self, cards_shown):
         self.__cards_shown = cards_shown
-
-    
-    

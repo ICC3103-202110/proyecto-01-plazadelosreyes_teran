@@ -13,5 +13,3 @@ class Deck:
             DECK.append('Contessa')
         shuffle(DECK)
         return DECK
-
-

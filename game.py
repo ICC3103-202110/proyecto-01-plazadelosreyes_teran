@@ -11,30 +11,35 @@ inactive_players = []
 
 class Game:
 
-    p = str(input("Select number of players(3-4): "))
+    print("░░░░░░░░░▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓ Ⓒ                             ▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒░░░░░░░░░")
+    print("░░░░░░░░░▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓          Ⓞ                    ▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒░░░░░░░░░")
+    print("░░░░░░░░░▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓                   Ⓤ           ▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒░░░░░░░░░")
+    print("░░░░░░░░░▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓                            Ⓟ  ▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒░░░░░░░░░\n")
+
+    p = str(input("Select the number of players(3-4): "))
     while p != '3' and p != '4':
         print("Invalid number, try again")
-        p = str(input("Select number of players(3-4): "))
-
+        p = str(input("Select the number of players(3-4): "))
     __number_of_players = int(p)
+
     @classmethod
     def play(cls,flag):
         if flag == 0:
             cls.__set_players(cls.__number_of_players)
         flag = 1
         while True:
+            turn_counter=0
             for current in active_players:
                 player = current
-
                 print('')
-                print(player.name,"your turn:")
-                print("Your cards:",player.cards_self)
-                print("Your coins:",player.coins)
+                print(player.name,"it\'s your turn:")
+                print(" -→ Cards:",player.cards_self)
+                print(" -→ Coins:",player.coins)
                 print('')
-                print('Active players:')
+                print('Active players ♥ :')
                 cls.__show_players(player,active_players)
                 if len(inactive_players) > 0:
-                    print('\nInactive players:')
+                    print('\nInactive players ☠ :')
                     cls.__show_players(player,inactive_players)
                 choice =  cls.__turn(player)
                 print('')
@@ -64,19 +69,24 @@ class Game:
                     print(player.name,'chooses Steal!')
                     if Logic.steal(player, active_players):
                         player.coins += 2
-
-        
                 cls.__remove_player()
                 if cls.__declare_winner() != False:
                     return 0
-
+                if turn_counter == int(len(active_players)-1):
+                    print("\n════════════════════════ END OF TURN ════════════════════════")
+                else:
+                    turn_counter +=1
 
     @classmethod
     def __set_players(cls,number):
         for i in range(1, number + 1):
             shown = ['*','*']
-            print("Enter players",i,"name: ")
+            print("Enter player",i,"name: ")
             name = input()
+            while name == "":
+                print("Invalid name, try again")
+                print("Enter player",i,"name: ")
+                name = input()
             cards = cls.__random_cards(deck)
             coins = 2
             players.append(Player(name,coins,cards,shown))
@@ -96,34 +106,29 @@ class Game:
         for other in players:
             if other.name == current.name:
                 continue
-            print(other.name,"coins:",other.coins)
-            print(other.name,'cards:',other.cards_shown)
-
+            print(other.name,"-→ Coins:",other.coins, '  Cards:', other.cards_shown)
 
     @classmethod
     def __turn(cls,current):
         print()
-        print(current.name,"Select your play:\n1)Income\n2)Foreign aid\n3)Coup\n4)Tax\n5)Assasinate \
-            \n6)Exchange\n7)Steal")
+        print(current.name,"Select the number of your play:\n1) ☞ Income\n2) ☞ Foreign aid\n3) ☞ Coup\n4) ☞ Tax\
+            \n5) ☞ Assasinate\n6) ☞ Exchange\n7) ☞ Steal")
         if current.coins >= 10:
             print('You have 10+ coins, you can only play coup')
             choice = '3'
             return choice
         else:
             choice = input()
-
         if choice not in choices:
             print("\nInvalid choice")
             return cls.__turn(current)
         if choice == '3' and current.coins < 7:
-            print('\nYou dont have enough coins to play Coup')
+            print('\nYou don\'t have enough coins to play Coup')
             return cls.__turn(current)
         if choice == '5' and current.coins < 3:
-            print('\nYou dont have enough coins to play Assasination')
+            print('\nYou don\'t have enough coins to play Assasination')
             return cls.__turn(current)
-        
         return choice
-        
         print('')
 
     @classmethod
@@ -144,7 +149,3 @@ class Game:
             return winner
         else:
             return False
-
-
-
-

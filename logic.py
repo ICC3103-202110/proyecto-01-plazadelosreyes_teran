@@ -3,9 +3,9 @@ from random import shuffle
 from deck import Deck
 from player import Player
 deck = Deck.create_deck()
+
 class Logic:
 
-    #public_methods
     def challenge(challenged,players,card):
         challengers = []
         for challenge in players:
@@ -17,7 +17,6 @@ class Logic:
             r = input()
             if r == 'y':
                 challengers.append(challenge)
-        
         if len(challengers) > 0:
             if len(challengers) > 1:
                 challenger = challengers[random.randint(0,len(challengers)-1)]
@@ -38,7 +37,7 @@ class Logic:
                         Logic.change_card(challenged, i)
                         return True
                     else:
-                        print(challenged.name,'You dont have the',i)
+                        print(challenged.name,'You don\'t have the',i)
                         Logic.loose_card(challenged)
                         return False
             else:            
@@ -52,7 +51,7 @@ class Logic:
                         Logic.change_card(challenged, card)
                         return True
                 else:
-                    print(challenged.name,'You dont have the',card)
+                    print(challenged.name,'You don\'t have the',card)
                     Logic.loose_card(challenged)
                     return False
         else: 
@@ -70,7 +69,6 @@ class Logic:
             r = input()
             if r == 'y':
                 blockers.append(block)
-
         if len(blockers) > 0:
             if len(blockers) > 1:
                 blocker = blockers[random.randint(0,len(blockers)-1)]
@@ -83,12 +81,11 @@ class Logic:
             return False
 
     def loose_card(looser):
-        print(looser.name,'wich one of your cards do you loose:',looser.cards_self)
+        print(looser.name,'wich card are you going to loose:',looser.cards_self)
         card = input()
         if card not in looser.cards_self:
             print('Invalid choice')
             return Logic.loose_card(looser)
-        
         looser.cards_self.remove(card)
         looser.cards_shown.remove('*')
         looser.cards_shown.append(card)
@@ -106,7 +103,6 @@ class Logic:
             current.cards_shown.append('*')
         print()
         print(current.name,'your new cards:',current.cards_self)
-
 
     def exchange_method(number,current,deck):
         if number == 1:
@@ -161,13 +157,6 @@ class Logic:
             print()
             print(current.name,'exchanged his/her cards!')
 
-
-
-
-
-
-
-    #public_methods
     def foreign_aid(current,active_players):
         card = 'Duke'
         counter = Logic.counter(active_players,current)
@@ -175,7 +164,6 @@ class Logic:
             print('')
             print(current.name,'takes 2 coins!')
             return True
-
         blocker = counter
         challenge = Logic.challenge(blocker,active_players,card)
         if challenge:
@@ -188,7 +176,6 @@ class Logic:
             print('\nThe counter lost the challenge,',current.name,'takes 2 coins!')
             return True
 
-
     def coup(current,active_players):
         print(current.name,'which player do you coup:')
         attacked = input('')
@@ -198,11 +185,9 @@ class Logic:
                 attacked = a
                 flag = True
                 break
-
         if not flag:
             print('Invalid player, try again')
             return Logic.coup(current, active_players)
-        
         print('')
         print(current.name,'coups',attacked.name+'!')
         Logic.loose_card(attacked)
@@ -254,12 +239,9 @@ class Logic:
                 print(current.name,'assasinates',attacked.name)
                 Logic.loose_card(attacked)
                 return True
-
         else:
             print()
             print(current.name,'cannot assasin',attacked.name)
-
-        
 
     def exchange(current,active_players):
         number = len(current.cards_self)
@@ -312,12 +294,4 @@ class Logic:
         else:
             print()
             print(current.name,'cannot steal from',stoled.name)
-
-
-
         print('')
-
-        
-
-
-
