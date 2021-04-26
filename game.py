@@ -1,6 +1,6 @@
+from numpy import random
 from deck import Deck
 from player import Player
-from numpy import random
 from logic import Logic
 
 deck = Deck.create_deck()

@@ -2,6 +2,7 @@ from numpy import random
 from random import shuffle
 from deck import Deck
 from player import Player
+
 deck = Deck.create_deck()
 
 class Logic:

@@ -1,5 +1,6 @@
 from numpy import random
 from game import Game
+
 flag = 0
 
 def main():

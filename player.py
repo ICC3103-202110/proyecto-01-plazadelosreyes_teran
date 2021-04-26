@@ -1,5 +1,3 @@
-#from deck import Deck 
-
 class Player:
 
     def __init__(self,name,coins,cards_self,cards_shown):
